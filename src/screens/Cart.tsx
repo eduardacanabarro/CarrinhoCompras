@@ -1,5 +1,7 @@
 import { StyleSheet, Text, View, FlatList, ActivityIndicator, Image, Alert, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
+import { useCartContext } from "../contexts/CartContext";
+import { ICartItem } from "../types/Product";
 
 interface Product {
   id: number;
@@ -11,26 +13,8 @@ interface Product {
 }
 
 const Cart = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("https://fakestoreapi.com/products/category/electronics")
-      .then((response) => response.json())
-      .then((data) => {
-        setProducts(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching products: ", error);
-        setLoading(false);
-      });
-  }, []);
-
-  const removeFromCart = (id: number) => {
-    setProducts(products.filter((product) => product.id !== id));
-  };
-
+  const {getCart, cart, removeProduct} = useCartContext()
+ 
   const placeOrder = () => {
     Alert.alert("Pedido realizado com sucesso! Parabéns.");
     console.log("Pedido realizado com sucesso! Parabéns.");
@@ -38,18 +22,21 @@ const Cart = () => {
   };
 
   const getTotalPrice = () => {
-    return products.reduce((total, product) => total + product.price, 0).toFixed(2);
+    return cart.reduce((total, product) => total + product.product.price, 0).toFixed(2);
   };
 
-  const renderProduct = ({ item }: { item: Product }) => (
+  useEffect(() => {
+    getCart()
+  },[])
+  const renderProduct = ({ item }: { item: ICartItem }) => (
     <View style={styles.productContainer}>
       <View style={styles.productInfo}>
-        <Image source={{ uri: item.image }} style={styles.productImage} />
+        <Image source={{ uri: item.product.image }} style={styles.productImage} />
       </View>
       <View style={styles.productDetails}>
-        <Text style={styles.productTitle}>{item.title}</Text>
-        <Text style={styles.productPrice}>${item.price}</Text>
-        <TouchableOpacity style={styles.button} onPress={() => removeFromCart(item.id)}>
+        <Text style={styles.productTitle}>{item.product.title}</Text>
+        <Text style={styles.productPrice}>${item.product.price}</Text>
+        <TouchableOpacity style={styles.button} onPress={() => removeProduct(item.product.id)}>
           <Text style={styles.buttonText}>Excluir do Carrinho</Text>
         </TouchableOpacity>
       </View>
@@ -58,13 +45,11 @@ const Cart = () => {
 
   return (
     <View style={styles.container}>
-      {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : (
+     
         <FlatList
-          data={products}
+          data={cart}
           renderItem={renderProduct}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item.product.id.toString()}
           ListFooterComponent={() => (
             <View style={styles.footer}>
               <Text style={styles.totalText}>Total: ${getTotalPrice()}</Text>
@@ -74,7 +59,7 @@ const Cart = () => {
             </View>
           )}
         />
-      )}
+      
       <Text>Cart</Text>
     </View>
   );
