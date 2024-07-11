@@ -12,6 +12,7 @@ interface Product {
   image: string;
 }
 
+
 const Cart = () => {
   const {getCart, cart, removeProduct} = useCartContext()
  
@@ -134,3 +135,28 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+
+/*
+
+//Array, mas fazer tipo preço é igual a preço ....
+let carrinho = [
+    { id: 1, nome: 'Produto 1', preco: 100 },
+    { id: 2, nome: 'Produto 2', preco: 200 },
+    { id: 3, nome: 'Produto 3', preco: 300 }
+];
+
+//Funcao pra remover
+function removerItemDoCarrinho(id) {
+    const novoCarrinho = carrinho.filter(item => item.id !== id);
+    
+    //atualiza
+    carrinho = novoCarrinho;
+}
+
+
+removerItemDoCarrinho(2); //removendo oque tem id 2
+
+console.log(carrinho); // [{ id: 1, nome: 'Produto 1', preco: 100 }, { id: 3, nome: 'Produto 3', preco: 300 }]
+
+*/

@@ -63,8 +63,14 @@ export const CartContextProvider = ({ children }: CartProviderProps) => {
     }
   };
 
-  // TODO
-  const removeProduct = () => {};
+  const removeProduct = (id: number) => {
+    
+    const newCart = cart.filter((c) => c.product.id !== id);
+   
+    setCart(newCart);
+    
+    storeCart(newCart);
+  };
 
   return (
     <CartContext.Provider value={{ cart, getCart, addProduct, removeProduct }}>
