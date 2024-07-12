@@ -7,7 +7,7 @@ type CartContextProps = {
   cart: ICartItem[];
   getCart: () => void;
   addProduct: (product: ProductDTO) => void;
-  removeProduct: (id: number) => void; // Ou remover enviando o produto todo e desestruturar na função
+  removeProduct: (id: number) => void; 
 };
 
 type CartProviderProps = {
