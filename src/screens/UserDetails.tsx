@@ -28,6 +28,7 @@ export default UserDetails;
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#ADD8E6",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -49,12 +50,12 @@ const styles = StyleSheet.create({
   },
   button: {
     borderWidth: 2,
-    borderColor: "blue",
+    borderColor: "black",
     padding: 10,
     borderRadius: 5,
   },
   buttonText: {
-    color: "blue",
+    color: "black",
     fontSize: 16,
     fontWeight: "bold",
   },

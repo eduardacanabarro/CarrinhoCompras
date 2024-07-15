@@ -15,6 +15,7 @@ const Payment = () => {
 
   return (
     <View style={styles.container}>
+      
       <Text style={styles.header}>Informações de Entrega</Text>
       <TextInput
         style={styles.input}
@@ -67,6 +68,7 @@ export default Payment;
 
 const styles = StyleSheet.create({
   container: {
+   
     flex: 1,
     padding: 20,
   },
