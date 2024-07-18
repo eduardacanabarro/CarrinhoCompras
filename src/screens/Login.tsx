@@ -1,5 +1,5 @@
 import { StyleSheet, TextInput, Text, TouchableOpacity } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#07161B",
+    backgroundColor: "#ADD8E6", //fundo
     padding: 10,
   },
   input: {
@@ -51,22 +51,22 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     borderWidth: 1,
     padding: 10,
-    color: "#fff",
-    borderColor: "#ccc",
+    color: "black",
+    borderColor: "black",
   },
   button: {
     width: "100%",
     height: 50,
-    backgroundColor: "#3D737F",
+    backgroundColor: "black",
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 12,
   },
   buttonText: {
-    color: "#fff",
+    color: "#ADD8E6",
   },
   title: {
-    color: "#fff",
+    color: "black",
     fontSize: 26,
     fontWeight: "bold",
   },

@@ -2,7 +2,6 @@ import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image } from "react
 import React from "react";
 import { ProductDTO } from "../types/Product"; 
 
-
 const ProductDetails = () => {
   
   const renderProduct = ({ item }: { item: ProductDTO }) => (
