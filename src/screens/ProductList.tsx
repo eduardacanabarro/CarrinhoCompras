@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, Image, TouchableOpacity, ActivityIndicator, Alert, StyleSheet } from "react-native";
 import { useCartContext } from "../contexts/CartContext";
 import { ProductDTO } from "../types/Product";
+import Animated, {FlipInYRight, FlipOutYRight} from 'react-native-reanimated';
 
 
 const ProductList = () => {
   const {addProduct } = useCartContext()
   const [products, setProducts] = useState<ProductDTO[]>([]);
   const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products/category/electronics")
@@ -25,7 +27,7 @@ const ProductList = () => {
 
 
   const renderProduct = ({ item }: { item: ProductDTO }) => (
-    <View style={styles.productContainer}>
+    <Animated.View entering={FlipInYRight} exiting={FlipOutYRight} style={styles.productContainer}>
       <View style={styles.productInfo}>
         <Image source={{ uri: item.image }} style={styles.productImage} />
       </View>
@@ -36,7 +38,7 @@ const ProductList = () => {
           <Text style={styles.buttonText}>Adicionar ao Carrinho</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </Animated.View>
   );
 
   return (
@@ -44,10 +46,11 @@ const ProductList = () => {
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
-        <FlatList
+        <Animated.FlatList
           data={products}
           renderItem={renderProduct}
           keyExtractor={(item) => item.id.toString()}
+          showsVerticalScrollIndicator={false}
         />
       )}
       <Text>Cart</Text>
