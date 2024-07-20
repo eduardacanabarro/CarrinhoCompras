@@ -7,7 +7,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/telainicial.png", 
+      "image": "./assets/telainicial.png",
       "resizeMode": "contain",
       "backgroundColor": "#252525"
     },
@@ -16,12 +16,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/android.png", 
+        "foregroundImage": "./assets/android.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.h_varga.carrinhocompras"
     },
     "web": {
       "favicon": "./assets/web.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "25c689ca-20ec-4c6a-9057-0d6634e99511"
+      }
     }
   }
 }
