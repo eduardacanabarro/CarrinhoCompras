@@ -1,32 +1,24 @@
-import { StyleSheet, Text, View, FlatList, ActivityIndicator, Image, Alert, TouchableOpacity, Button } from "react-native";
-import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from "react-native";
+import React, { useEffect } from "react";
 import { useCartContext } from "../contexts/CartContext";
 import { ICartItem } from "../types/Product";
-import { useNavigation, NavigationProp} from '@react-navigation/native';
-
-import { RootStackParamList } from "../../App";
-
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-}
+import { useNavigation } from '@react-navigation/native';
 
 const Cart = () => {
   const { getCart, cart, removeProduct } = useCartContext();
   const navigation = useNavigation<any>();
- 
 
   useEffect(() => {
     getCart();
   }, []);
 
   const placeOrder = () => {
-    console.log("Pedido realizado com sucesso! Parabéns.");
-    navigation.navigate('Payment'); 
+    if (cart.length === 0) {
+      alert("O carrinho está vazio. Adicione produtos antes de fazer o pedido.");
+    } else {
+      console.log("Pedido realizado com sucesso! Parabéns.");
+      navigation.navigate('Payment');
+    }
   };
 
   const getTotalPrice = () => {
@@ -50,19 +42,23 @@ const Cart = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={cart}
-        renderItem={renderProduct}
-        keyExtractor={(item) => item.product.id.toString()}
-        ListFooterComponent={() => (
-          <View style={styles.footer}>
-            <Text style={styles.totalText}>Total: ${getTotalPrice()}</Text>
-            <TouchableOpacity style={styles.orderButton} onPress={placeOrder}>
-              <Text style={styles.orderButtonText}>Fazer Pedido</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
+      {cart.length === 0 ? (
+        <Text style={styles.emptyCartText}>Seu carrinho está vazio. Adicione produtos para fazer um pedido.</Text>
+      ) : (
+        <FlatList
+          data={cart}
+          renderItem={renderProduct}
+          keyExtractor={(item) => item.product.id.toString()}
+          ListFooterComponent={() => (
+            <View style={styles.footer}>
+              <Text style={styles.totalText}>Total: ${getTotalPrice()}</Text>
+              <TouchableOpacity style={styles.orderButton} onPress={placeOrder}>
+                <Text style={styles.orderButtonText}>Fazer Pedido</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
+      )}
     </View>
   );
 };
@@ -77,21 +73,21 @@ const styles = StyleSheet.create({
   productContainer: {
     padding: 10,
     marginVertical: 8,
-    flexDirection: 'row', 
+    flexDirection: 'row',
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 8,
   },
   productInfo: {
-    flex: 1, 
+    flex: 1,
   },
   productImage: {
-    width: 100, 
-    height: 100, 
+    width: 100,
+    height: 100,
   },
   productDetails: {
-    flex: 2, 
-    paddingLeft: 10, 
+    flex: 2,
+    paddingLeft: 10,
   },
   productTitle: {
     fontSize: 16,
@@ -134,5 +130,11 @@ const styles = StyleSheet.create({
   orderButtonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  emptyCartText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 20,
   },
 });
