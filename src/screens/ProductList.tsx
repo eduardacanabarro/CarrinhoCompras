@@ -1,15 +1,17 @@
+// ProductList.js
 import React, { useState, useEffect } from "react";
-import { View, Text, FlatList, Image, TouchableOpacity, ActivityIndicator, Alert, StyleSheet } from "react-native";
+import { View, Text, FlatList, Image, TouchableOpacity, ActivityIndicator, StyleSheet } from "react-native";
 import { useCartContext } from "../contexts/CartContext";
 import { ProductDTO } from "../types/Product";
-import Animated, {FlipInYRight, FlipOutYRight} from 'react-native-reanimated';
-
+import Animated, { FlipInYRight, FlipOutYRight } from 'react-native-reanimated';
+import ProductDetails from "./ProductDetails"; // Import ProductDetails
 
 const ProductList = () => {
-  const {addProduct } = useCartContext()
+  const { addProduct } = useCartContext();
   const [products, setProducts] = useState<ProductDTO[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<ProductDTO | null>(null);
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products/category/electronics")
@@ -24,7 +26,15 @@ const ProductList = () => {
       });
   }, []);
 
+  const openModal = (product: ProductDTO) => {
+    setSelectedProduct(product);
+    setModalVisible(true);
+  };
 
+  const closeModal = () => {
+    setSelectedProduct(null);
+    setModalVisible(false);
+  };
 
   const renderProduct = ({ item }: { item: ProductDTO }) => (
     <Animated.View entering={FlipInYRight} exiting={FlipOutYRight} style={styles.productContainer}>
@@ -34,9 +44,14 @@ const ProductList = () => {
       <View style={styles.productDetails}>
         <Text style={styles.productTitle}>{item.title}</Text>
         <Text style={styles.productPrice}>${item.price}</Text>
-        <TouchableOpacity style={styles.button} onPress={() => addProduct(item)}>
-          <Text style={styles.buttonText}>Adicionar ao Carrinho</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity style={styles.button} onPress={() => addProduct(item)}>
+            <Text style={styles.buttonText}>Adicionar ao Carrinho</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => openModal(item)}>
+            <Text style={styles.buttonText}>Ver Detalhes</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </Animated.View>
   );
@@ -54,9 +69,15 @@ const ProductList = () => {
         />
       )}
       <Text>Cart</Text>
+      <ProductDetails 
+        product={selectedProduct} 
+        visible={modalVisible} 
+        onClose={closeModal} 
+      />
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -85,36 +106,52 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#888",
   },
+  buttonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
   button: {
     backgroundColor: "#007bff",
     padding: 10,
     borderRadius: 5,
-    marginTop: 10,
+    marginHorizontal: 1,
   },
   buttonText: {
     color: "#fff",
     textAlign: "center",
   },
-  totalText: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  orderButton: {
-    backgroundColor: "#28a745",
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
-  },
-  orderButtonText: {
-    color: "#fff",
-    textAlign: "center",
-  },
-  footer: {
-    marginTop: 20,
-    padding: 10,
-    borderTopWidth: 1,
-    borderColor: '#ccc',
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 8,
+    padding: 16,
+    alignItems: 'center',
+  },
+  modalImage: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'contain',
+  },
+  modalDescription: {
+    marginTop: 16,
+    fontSize: 16,
+  },
+  closeButton: {
+    marginTop: 16,
+    padding: 10,
+    backgroundColor: '#2196F3',
+    borderRadius: 8,
+  },
+  closeButtonText: {
+    color: 'white',
+    fontSize: 16,
   },
 });
 
