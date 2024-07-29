@@ -1,4 +1,3 @@
-// ProductDetails.js
 import { StyleSheet, Text, View, TouchableOpacity, Image, Modal } from "react-native";
 import React from "react";
 import { ProductDTO } from "../types/Product";

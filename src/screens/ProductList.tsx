@@ -1,10 +1,9 @@
-// ProductList.js
 import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, Image, TouchableOpacity, ActivityIndicator, StyleSheet } from "react-native";
 import { useCartContext } from "../contexts/CartContext";
 import { ProductDTO } from "../types/Product";
 import Animated, { FlipInYRight, FlipOutYRight } from 'react-native-reanimated';
-import ProductDetails from "./ProductDetails"; // Import ProductDetails
+import ProductDetails from "./ProductDetails"; 
 
 const ProductList = () => {
   const { addProduct } = useCartContext();
